@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
+
+</head>
+<body style="align-items: center; justify-content: center; display: flex; text-align: center;">
+<div th:switch="${threads}" >
+  <h2 th:case="null">No Threads yet!</h2>
+  <div th:case="*" >
+    <div style="background-color: #cbcbcb; width: auto; border-radius: 10px; outline: 2px solid #bdbbbb;">
+      <h2 style="text-align: center;">Threads</h2>
+    </div>
+    <table class="pure-table pure-table-horizontal">
+      <thead>
+      <tr>
+        <th>Name</th>
+        <th>Created</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="thread : ${threads}">
+        <td> <a  th:text="${thread.title}"  th:href="@{/view_thread/{id}(id=${thread.id})}"></a></td>
+        <td th:text="${thread.FormatTime  }"></td>
+        <td><a th:href="@{/edit_thread/{id}(id=${thread.id})}">Edit</a></td>
+        <td><a th:href="@{/delete_thread/{id}(id=${thread.id})}">Delete</a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <p><a class="pure-button" href="/createthread" style="text-align: center;">Add a new Thread</a></p>
+</div>
+</body>
+</html>

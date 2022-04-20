@@ -1,0 +1,6 @@
+2022-04-18 16:39:05 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "THREAD" not found; SQL statement:
+select thread0_.id as id1_1_, thread0_.content as content2_1_, thread0_.created_on as created_3_1_, thread0_.title as title4_1_ from thread thread0_ [42102-200]
+2022-04-18 16:41:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "THREAD" not found; SQL statement:
+select thread0_.id as id1_1_, thread0_.content as content2_1_, thread0_.created_on as created_3_1_, thread0_.title as title4_1_ from thread thread0_ [42102-200]
