@@ -17,19 +17,19 @@
     </style>
 </head>
 <body style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
-
+<h1 th:text="${section.title}"></h1>
 <h1 th:text="${thread.title}"></h1>
 
 <p th:text="${thread.content}" style="white-space: pre-wrap; background-color: #cbcbcb; width: 50%; height: 500px; border: 10; border-radius: 10px; padding: 10px;"></p>
 
 <h2>Comments</h2>
- 
+
 <h3 th:if="${#lists.isEmpty(comments)}">No Comments yet!</h3>
 <div th:if="${not #lists.isEmpty(comments)}" class="">
     <div th:each="comment : ${comments}" style="background-color: #cbcbcb; border-radius: 2px; ">
         <p th:text="${comment.content}" class="comment" ></p>
         <p th:text="${comment.FormatTime}" class="comment" style="text-align: end;" ></p>
-    </div> 
+    </div>
 </div>
 
 <form action="#" th:action="@{/createcomment/{id}(id=${thread.id})}" th:object="${comment}" method="post" id="add" class="pure-form pure-form-stacked">
@@ -40,6 +40,6 @@
     <input type="submit" value="Add Comment" >
 </form>
 
-<p><a href="/index" class="pure-button">Back to home page</a></p>
+<p><a th:href="@{/show_threads/{id}(id=${section.id})}" class="pure-button">Back to home page</a></p>
 </body>
 </html>

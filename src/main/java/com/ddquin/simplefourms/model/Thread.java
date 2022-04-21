@@ -1,6 +1,8 @@
 package com.ddquin.simplefourms.model;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -15,7 +17,7 @@ public class Thread {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     @NotBlank(message = "Thread title is mandatory")
     private String title;
@@ -39,6 +41,11 @@ public class Thread {
     @Column(updatable = false)
     private LocalDateTime createdOn;
 
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "section_id", nullable = false, updatable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Section section;
+
     public LocalDateTime getCreatedOn() {
         return createdOn;
     }
@@ -53,11 +60,11 @@ public class Thread {
         return date;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -75,5 +82,13 @@ public class Thread {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Section getSection() {
+        return section;
+    }
+
+    public void setSection(Section section) {
+        this.section = section;
     }
 }

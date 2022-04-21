@@ -25,16 +25,7 @@ public class CommentController {
     @Autowired
     private ThreadRepository threadRepository;
 
-    @GetMapping("/view_thread/{id}")
-    public String showThread(@PathVariable("id") long id, Model model, Comment comment) {
-        Thread thread = threadRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid Thread Id:" + id));
 
-        model.addAttribute("thread", thread);
-        List<Comment> commentList = commentRepository.findByThreadId(id);
-        model.addAttribute("comments", commentList);
-        return "view-thread";
-    }
 
     @PostMapping("/createcomment/{id}")
     public String addComment(@PathVariable("id") long id, @Valid Comment comment, BindingResult result, Model model) {
