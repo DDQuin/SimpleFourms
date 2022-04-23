@@ -30,6 +30,17 @@ public class SectionController {
         return "index";
     }
 
+    @GetMapping("/login")
+    public String showLoginForm(Model model) {
+
+        return "login";
+    }
+
+    @GetMapping("/")
+    public String showSectionsNormal(Model model) {
+        return "redirect:/index";
+    }
+
     @GetMapping("/edit_section/{id}")
     public String showUpdateForm(@PathVariable("id") long id, Model model) {
         Section section = sectionRepository.findById(id)
@@ -60,6 +71,9 @@ public class SectionController {
             section.setId(id);
             return "update-section";
         }
+        // Save old section num threads before updating
+        Section oldSection = sectionRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid Section Id:" + id));
+        section.setNumThreads(oldSection.getNumThreads());
         sectionRepository.save(section);
         return "redirect:/index";
     }

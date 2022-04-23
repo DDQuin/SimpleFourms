@@ -12,8 +12,7 @@ public class Section {
 
     @NotBlank(message = "Section title is mandatory")
     private String title;
-
-    @Column(updatable = false)
+    
     private int numThreads = 0;
 
     public int getNumThreads() {
