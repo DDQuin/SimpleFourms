@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
 <head>
   <title>Spring Security Example </title>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
+
 </head>
-<body>
+<body style="align-items: center; justify-content: center; display: flex; text-align: center;">
 <div th:if="${param.error}">
   Invalid username and password.
 </div>
 <div th:if="${param.logout}">
   You have been logged out.
 </div>
-<form th:action="@{/login}" method="post">
-  <div><label> User Name : <input type="text" name="username"/> </label></div>
-  <div><label> Password: <input type="password" name="password"/> </label></div>
-  <div><input type="submit" value="Sign In"/></div>
-</form>
+<div>
+  <form th:action="@{/login}" method="post" class="pure-form pure-form-stacked">
+    <div><label> User Name : <input type="text" name="username"/> </label></div>
+    <div><label> Password: <input type="password" name="password"/> </label></div>
+    <div><input class="pure-button" type="submit" value="Sign In"/></div>
+  </form>
 
-<p><a class="pure-button"  href="/index" style="text-align: center;">Go to Home Page</a></p>
+  <p><a class="pure-button"  href="/index" style="text-align: center;">Go to Home Page</a></p>
+</div>
 </body>
 </html>

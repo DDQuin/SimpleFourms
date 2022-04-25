@@ -1,5 +1,6 @@
 package com.ddquin.simplefourms.controller;
 
+import com.ddquin.simplefourms.exceptions.NoAccessException;
 import com.ddquin.simplefourms.model.Comment;
 import com.ddquin.simplefourms.model.Section;
 import com.ddquin.simplefourms.model.Thread;
@@ -7,14 +8,23 @@ import com.ddquin.simplefourms.repository.CommentRepository;
 import com.ddquin.simplefourms.repository.SectionRepository;
 import com.ddquin.simplefourms.repository.ThreadRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.PermissionDeniedDataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.validation.Valid;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 
 @Controller
@@ -55,6 +65,11 @@ public class ThreadController {
         Thread thread = threadRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Thread Id:" + id));
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String user = authentication.getName();
+        if (!thread.getUsername().equals(user)) {
+            throw new NoAccessException();
+        }
         model.addAttribute("thread", thread);
         return "update-thread";
     }
@@ -73,6 +88,8 @@ public class ThreadController {
         }
         Section section = sectionRepository.findById(section_id).orElseThrow(() -> new IllegalArgumentException("Invalid section Id:" + section_id));
         thread.setSection(section);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        thread.setUsername(authentication.getName());
         section.setNumThreads(section.getNumThreads() + 1);
         sectionRepository.save(section);
         threadRepository.save(thread);
@@ -86,6 +103,12 @@ public class ThreadController {
             thread.setId(id);
             return "update-thread";
         }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String user = authentication.getName();
+        Thread oldThread = threadRepository.getById(id);
+        if (!oldThread.getUsername().equals(user)) {
+            throw new NoAccessException();
+        }
         long sectionID = threadRepository.getById(id).getSection().getId();
         threadRepository.save(thread);
         return "redirect:/show_threads/" + sectionID;
@@ -96,6 +119,11 @@ public class ThreadController {
 
         Thread thread = threadRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Thread Id:" + id));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String user = authentication.getName();
+        if (!thread.getUsername().equals(user)) {
+            throw new NoAccessException();
+        }
         long sectionID = thread.getSection().getId();
         thread.getSection().setNumThreads(thread.getSection().getNumThreads() - 1);
         sectionRepository.save(thread.getSection());
@@ -108,3 +136,5 @@ public class ThreadController {
 
     // additional CRUD methods
 }
+
+

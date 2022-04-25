@@ -1,17 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
-    <title><!DOCTYPE html>
-        <html lang="en">
-        <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
+    <title>Simple Forum</title>
     <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
 
 </head>
 <body style="align-items: center; justify-content: center; display: flex; text-align: center;">
-
+<div th:if="${param.error}">
+    Invalid username and password.
+</div>
 <div th:switch="${threads}" >
     <h2 th:case="null">No Threads yet!</h2>
     <div th:case="*" >
@@ -24,6 +22,7 @@
             <tr>
                 <th>Name</th>
                 <th>Created</th>
+                <th>User</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
@@ -32,6 +31,7 @@
             <tr th:each="thread : ${threads}">
                 <td> <a  th:text="${thread.title}"  th:href="@{/view_thread/{id}(id=${thread.id})}"></a></td>
                 <td th:text="${thread.FormatTime  }"></td>
+                <td th:text="${thread.username}"></td>
                 <td><a th:href="@{/edit_thread/{id}(id=${thread.id})}">Edit</a></td>
                 <td><a th:href="@{/delete_thread/{id}(id=${thread.id})}">Delete</a></td>
             </tr>
@@ -40,6 +40,12 @@
     </div>
     <p><a class="pure-button"  th:href="@{/createthread/{id}(id=${section.id})}" style="text-align: center;">Add a new Thread</a></p>
     <p><a class="pure-button"  href="/index" style="text-align: center;">Go back to Home Page</a></p>
+    <div class="userinfo">
+        <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
+            <p th:text="'Welcome, ' + ${#authentication.getPrincipal().getUsername()} + '!'" ></p>
+            <input class="pure-button"  type="submit" value="Sign Out"/>
+        </form>
+    </div>
 </div>
 </body>
 </html>

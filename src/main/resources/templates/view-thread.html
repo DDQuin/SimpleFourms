@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Simple Forum</title>
     <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
     <style>
         .comment {
@@ -27,8 +27,9 @@
 <h3 th:if="${#lists.isEmpty(comments)}">No Comments yet!</h3>
 <div th:if="${not #lists.isEmpty(comments)}" class="">
     <div th:each="comment : ${comments}" style="background-color: #cbcbcb; border-radius: 2px; ">
-        <p th:text="${comment.content}" class="comment" ></p>
+        <p th:text="${comment.display}" class="comment" ></p>
         <p th:text="${comment.FormatTime}" class="comment" style="text-align: end;" ></p>
+       <span sec:authorize="isAuthenticated()"> <a th:if="${comment.username == #authentication.getPrincipal().getUsername()}" th:href="@{/deletecomment/{id}(id=${comment.id})}">Delete</a></span>
     </div>
 </div>
 

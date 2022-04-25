@@ -31,10 +31,10 @@ public class BasicConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                    .antMatchers("/index", "/view_thread/**", "/show_threads/**", "/").permitAll()
-                    .antMatchers("/createthread/**", "/addthread/**", "/createcomment/*" ).hasRole("USER")
-                    .antMatchers("/edit_thread/**", "/update_thread/**",  "/delete_thread/**", "/addsection", "/createsection", "/delete_section/**"
-                    , "/update_section/**").hasRole("ADMIN")
+                    .antMatchers("/index", "/view_thread/**", "/show_threads/**",  "/").permitAll()
+                    .antMatchers("/createthread/**", "/addthread/**", "/createcomment/*", "/delete_thread/**", "/edit_thread/**", "/update_thread/**").hasRole("USER")
+                    .antMatchers(   "/addsection", "/createsection", "/delete_section/**"
+                    , "/update_section/**", "/h2-console/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
                     .and()
                 .formLogin()

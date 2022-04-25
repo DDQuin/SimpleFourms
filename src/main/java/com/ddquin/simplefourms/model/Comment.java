@@ -22,6 +22,9 @@ public class Comment {
     @Lob
     private String content;
 
+    @Column(updatable = false)
+    private String username;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdOn;
@@ -72,5 +75,16 @@ public class Comment {
 
     public void setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+    public String display() {
+        return username + ": " + content;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

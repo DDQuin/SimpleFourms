@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css" integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous">
+  <title>Simple Forum</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@2.1.0/build/pure-min.css"
+          integrity="sha384-yHIFVG6ClnONEA5yB5DJXfW2/KC173DIQrYoZMEtBvGzmf0PKiGyNEqe9N6BNDBH" crossorigin="anonymous"
+          >
 
 </head>
 <body style="align-items: center; justify-content: center; display: flex; text-align: center;">
@@ -33,9 +35,13 @@
     </table>
   </div>
   <p><a class="pure-button" href="/createsection" style="text-align: center;">Add a new Section</a></p>
+  <div class="userinfo">
+    <form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
+      <p th:text="'Welcome, ' + ${#authentication.getPrincipal().getUsername()} + '!'" ></p>
+      <input class="pure-button"  type="submit" value="Sign Out"/>
+    </form>
+  </div>
 </div>
-<form th:action="@{/logout}" method="post">
-  <input type="submit" value="Sign Out"/>
-</form>
+
 </body>
 </html>
